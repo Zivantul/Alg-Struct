@@ -1,0 +1,81 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Main {
+    final static Integer arraySize = 100000;
+
+    public static void main(String[] args) {
+
+// 1. Создать массив большого размера (миллион элементов).
+        MyArrayList<Integer> myArr = new MyArrayList<>(arraySize);
+        //System.out.println(myArr.toString());
+
+// 2. Написать методы удаления, добавления, поиска элемента массива.
+        // добавление
+        myArr.add(15);
+        myArr.add(18);
+        myArr.add(3);
+        myArr.add(7);
+        myArr.add(1);
+        myArr.add(28);
+
+        //System.out.println(myArr.toString());
+
+        // удаление
+        myArr.delete(15);
+        myArr.delete(7);
+        myArr.delete(28);
+        //System.out.println(myArr.toString());
+
+        // поиск элемента массива
+//        System.out.println(myArr.search(3));
+//        System.out.println(myArr.search(19));
+//        System.out.println(myArr.search(1));
+
+//3. Заполнить массив случайными числами.
+        MyArrayList<Integer> myArrRand = new MyArrayList<>(arraySize);
+        MyArrayList<Integer> myArrRand2 = new MyArrayList<>(arraySize);
+        MyArrayList<Integer> myArrRand3 = new MyArrayList<>(arraySize);
+
+
+        for (int i = 0; i < arraySize; i++) {
+            int temp = (int)(1+Math.random()*1000);
+            myArrRand.add(temp);
+        }
+
+        for (int i = 0; i < arraySize; i++) {
+            int temp = (int)(1+Math.random()*1000);
+            myArrRand2.add(temp);
+        }
+
+        for (int i = 0; i < arraySize; i++) {
+            int temp = (int)(1+Math.random()*1000);
+            myArrRand3.add(temp);
+        }
+
+        //System.out.println(myArrRand.toString());
+
+// 4. Написать методы, реализующие рассмотренные виды сортировок, и проверить скорость выполнения каждой.
+        long workingTime = System.nanoTime();
+        myArrRand.selectionSort();
+        workingTime = System.nanoTime() - workingTime;
+
+        //System.out.println(myArrRand.toString());
+        System.out.println("Время работы SelectionSort: " + workingTime);
+
+        workingTime = System.nanoTime();
+        myArrRand2.bubbleSort();
+        workingTime = System.nanoTime() - workingTime;
+
+        //System.out.println(myArrRand.toString());
+        System.out.println("Время работы BubbleSort: " + workingTime);
+
+        workingTime = System.nanoTime();
+        myArrRand3.insertionSort();
+        workingTime = System.nanoTime() - workingTime;
+
+        //System.out.println(myArrRand.toString());
+        System.out.println("Время работы InsertionSort: " + workingTime);
+
+    }
+}
