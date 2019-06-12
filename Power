@@ -1,0 +1,21 @@
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(slowPower(2, 16));
+    }
+
+
+
+    public static int slowPower (int baseInt, int power) {
+        int res = 0;
+        if (power == 0) {
+            return 1;
+        }
+        res = slowPower(baseInt, power-1) * baseInt;
+
+        return res;
+    }
+    
+
+}

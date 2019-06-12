@@ -1,0 +1,106 @@
+package Newbag;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+    public class Knapsack {
+
+        private static final List<Box> BOXES = new ArrayList<>();
+        private static final Map<Integer, Bag> CACHE = new HashMap<>();
+        private static final boolean FINITE_ITEMS = true; //whether an item can be added more than once
+
+        public static void main(String[] args) {
+            BOXES.add(new Box(5, 12, "BX_1"));
+            BOXES.add(new Box(2, 2, "BX_2"));
+            BOXES.add(new Box(2, 1, "BX_3"));
+            BOXES.add(new Box(1, 1, "BX_4"));
+            BOXES.add(new Box(10, 4, "BX_5"));
+            Bag best = bestBagForCapa(15);
+            System.out.println(best.toString());
+        }
+
+        public static Bag bestBagForCapa(int capa) {
+            if (CACHE.containsKey(capa)) return CACHE.get(capa);
+            if (capa < 0) return null;
+            if (capa == 0) return new Bag(0, 0);
+
+            int currentWeight = -1;
+            int currentValue = -1;
+            String newItem = null;
+            List<String> previousItems = null;
+            for (Box p : BOXES) {
+                Bag previous = bestBagForCapa(capa - p.weight);
+                if (previous == null) continue;
+
+                int weightSoFar = previous.weight;
+                int valueSoFar = previous.value;
+                int nextBestValue = 0;
+                Box candidateItem = null;
+                for (Box candidate : BOXES) {
+                    if (FINITE_ITEMS && previous.alreadyHas(candidate)) continue;
+                    if (weightSoFar + candidate.weight <= capa && nextBestValue < valueSoFar + candidate.price) {
+                        candidateItem = candidate;
+                        nextBestValue = valueSoFar + candidate.price;
+                    }
+                }
+
+                if (candidateItem != null && nextBestValue > currentValue) {
+                    currentValue = nextBestValue;
+                    currentWeight = weightSoFar + candidateItem.weight;
+                    newItem = candidateItem.name;
+                    previousItems = previous.contents;
+                }
+            }
+
+            if (currentWeight <= 0 || currentValue <= 0) throw new RuntimeException("cannot be 0 here");
+            Bag bestBag = new Bag(currentWeight, currentValue);
+            bestBag.add(previousItems);
+            bestBag.add(Collections.singletonList(newItem));
+            CACHE.put(capa, bestBag);
+            return bestBag;
+        }
+
+    }
+
+    class Box {
+
+        int price;
+        int weight;
+        String name;
+
+        Box(int price, int weight, String name) {
+            this.price = price;
+            this.weight = weight;
+            this.name = name;
+        }
+
+    }
+
+    class Bag {
+
+        List<String> contents = new ArrayList<>();
+        int weight;
+        int value;
+
+        boolean alreadyHas(Box item) {
+            return contents.contains(item.name);
+        }
+
+        @Override
+        public String toString() {
+            return "weight " + weight + " , value " + value + "\n" + contents.toString();
+        }
+
+        void add(List<String> name) {
+            contents.addAll(name);
+        }
+
+        Bag(int weight, int value) {
+            this.weight = weight;
+            this.value = value;
+        }
+
+    }
