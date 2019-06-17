@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Main {
+
+
+//1. Создать и запустить программу для построения двоичного дерева.
+// В цикле построить двадцать деревьев с глубиной в 6 уровней.
+// Данные, которыми необходимо заполнить узлы деревьев, представляются в виде чисел типа int.
+// Число, которое попадает в узел, должно генерироваться случайным образом в диапазоне от -100 до 100.
+//2. Проанализировать, какой процент созданных деревьев являются несбалансированными.
+    
+    public static void main(String[] args) {
+        int createBST = 20; // количество создаваемых деревьев
+        double bstBalanced = 0;
+        double bstUnbalanced = 0;
+        double balanced;
+
+        for (int i = 0; i < createBST; i++) {
+            BST<Integer,String> bst = new BST<>();
+            int curLevel=0;
+
+            while (curLevel<=6) {
+                int tmp = getRandomInt();
+                bst.put(tmp,""+tmp);
+                curLevel = bst.getLevelAll(bst.root);
+            }
+
+            if (bst.isBalanced(bst.root)){
+                bstBalanced++;
+            } else {
+                bstUnbalanced++;
+            }
+
+            System.out.println(bst);
+        }
+
+
+        balanced = (bstBalanced / createBST);
+
+        System.out.println("\n Доля сбалансированных деревьев: " + balanced);
+
+    }
+
+    public static int getRandomInt () {
+        int tmp = 0;
+        Random rnd = new Random();
+
+        int min = -100;
+        int max = 100;
+        int diff = max - min;
+
+        tmp = rnd.nextInt(diff+1) + min;
+        return tmp;
+    }
+}
