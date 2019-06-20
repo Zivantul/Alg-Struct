@@ -1,0 +1,43 @@
+public class Main {
+    public static int maxVertexCount = 10;
+
+    //1. Реализовать программу, в которой задается граф из 10 вершин.
+    // Задать ребра и найти кратчайший путь с помощью поиска в ширину.
+
+
+    public static void main(String[] args) {
+        Graph graph = new Graph(maxVertexCount);
+
+        // добавляем ребра циклом
+        for (int i = 0; i < maxVertexCount; i++) {
+            int vx1 = (int) (1 + Math.random() * maxVertexCount-1);
+            int vx2 = (int) (1 + Math.random() * maxVertexCount-1);
+
+            while (vx2 == vx1) {
+                vx2 = (int) (1 + Math.random() * maxVertexCount-1);
+            }
+
+            graph.addEdge(vx1,vx2);
+            System.out.println("Добавлена связь: " + vx1 + " -> " + vx2);
+        }
+        System.out.println("Добавлено связей: " + graph.getEdgeCount());
+
+        
+        // случайная точка от которой будем искать путь
+        int tmpStartVertex = (int) (1 + Math.random() * maxVertexCount-1);
+
+
+        BreadthFirstPath bfp = new BreadthFirstPath(graph, tmpStartVertex);
+
+        // случайная точка к которой будем искать кратчайший путь
+        int tmpTargetVertex = (int) (1 + Math.random() * maxVertexCount-1);
+        while (!bfp.hasPathTo(tmpTargetVertex) || tmpTargetVertex == tmpStartVertex) {
+            tmpTargetVertex = (int) (1 + Math.random() * maxVertexCount-1);
+        }
+
+
+        System.out.println("Кратчайший путь от " + tmpStartVertex + " к " + tmpTargetVertex + ": " + bfp.pathTo(tmpTargetVertex));
+
+
+    }
+}
